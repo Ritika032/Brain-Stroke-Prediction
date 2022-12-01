@@ -1,7 +1,9 @@
+import warnings
+warnings.filterwarnings('ignore')
+
 # IMPORT THE LIBRARIES
 import matplotlib.pyplot as plt
 import seaborn as sns
-import numpy as np
 import pandas as pd
 
 # READ THE DATASET
@@ -13,6 +15,7 @@ print(f'Random rowss:\n{df.sample(6)}')
 print(f'\nThe brain stroke dataset includes the following\n: {df.columns}')
 print(f'\nTotal Rows and Columns = {df.shape}')
 print(f'\nStatistics: \n{df.describe()}')
+print(f'\Info: \n{df.info()}')
 print(f'\nChecking for NULL values: \n{df.isnull().sum()}')
 print(f'\nData proportions: {df["gender"].unique()}')
 print(f'{df["gender"].value_counts()}')
@@ -46,7 +49,6 @@ df.plot(kind="hist", y="age", bins=70, color="b", ax=axes[0][0], edgecolor = "bl
 df.plot(kind="hist", y="bmi", bins=100, color="r", ax=axes[0][1], edgecolor = "black")
 df.plot(kind='scatter', x='age', y='avg_glucose_level', color='green', ax=axes[1][0], title="Age vs. avg_glucose_level")
 df.plot(kind='scatter', x='bmi', y='avg_glucose_level', color='red', ax=axes[1][1], title="bmi vs. avg_glucose_level")
-plt.title('SUBPLOTS')
 plt.show()
 
 # HEATMAP
@@ -109,11 +111,10 @@ lr.fit(x_train,y_train)
 lr_y_pred = lr.predict(x_test) 
 
 # EVALUATION
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score , confusion_matrix, accuracy_score
+from sklearn.metrics import mean_absolute_error, r2_score , confusion_matrix, accuracy_score, classification_report
 print("\nMODEL EVALUATION: ")
-print("Consfusion Matrixr-\n", confusion_matrix(y_test, lr_y_pred)) 
 print("Mean_absolute_error = ", mean_absolute_error(lr_y_pred, y_test)) 
-print("Mean_squared_error = ", mean_squared_error(lr_y_pred, y_test)) 
+print("The classification report is:\n",classification_report(y_test,lr_y_pred))
 print("r2_score = ", r2_score(lr_y_pred, y_test)) 
 print("Accuracy of LOGISTIC REGRESSION MODEL in percentage (%): ", (accuracy_score(y_test, lr_y_pred))*100)
 
@@ -128,13 +129,15 @@ bnb.fit(x_train,y_train)
 bnb_y_pred = bnb.predict(x_test) 
 
 # EVALUATION
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score , confusion_matrix, accuracy_score
+from sklearn.metrics import mean_absolute_error, r2_score , confusion_matrix, accuracy_score, classification_report
 print("\nMODEL EVALUATION: ")
-print("Consfusion Matrixr-\n", confusion_matrix(y_test, bnb_y_pred)) 
+cm = confusion_matrix(y_test,bnb_y_pred)
+print("Consfusion Matrix-\n", confusion_matrix(y_test, bnb_y_pred)) 
 print("Mean_absolute_error = ", mean_absolute_error(bnb_y_pred, y_test)) 
-print("Mean_squared_error = ", mean_squared_error(bnb_y_pred, y_test)) 
-print("r2_score = ", r2_score(bnb_y_pred, y_test)) 
+print("The classification report is:\n",classification_report(y_test, bnb_y_pred))
 print("Accuracy of NAIVE BAYES- BERNOULLI MODEL in percentage (%): ", (accuracy_score(y_test, bnb_y_pred))*100)
+sns.heatmap(cm, annot=True)
+plt.show()
 
 # IMPORT THE MODEL/ALGORITHM - DECISION TREE
 from sklearn.tree import DecisionTreeClassifier
@@ -147,13 +150,15 @@ dtc.fit(x_train,y_train)
 dtc_y_pred = dtc.predict(x_test) 
 
 # EVALUATION
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score , confusion_matrix, accuracy_score
+from sklearn.metrics import mean_absolute_error, r2_score , confusion_matrix, accuracy_score, classification_report
 print("\nMODEL EVALUATION: ")
-print("Consfusion Matrixr-\n", confusion_matrix(y_test, dtc_y_pred)) 
+cm = confusion_matrix(y_test,dtc_y_pred)
+print("Consfusion Matrix-\n", confusion_matrix(y_test, dtc_y_pred)) 
 print("Mean_absolute_error = ", mean_absolute_error(dtc_y_pred, y_test)) 
-print("Mean_squared_error = ", mean_squared_error(dtc_y_pred, y_test)) 
-print("r2_score = ", r2_score(dtc_y_pred, y_test)) 
+print("The classification report is:\n",classification_report(y_test,dtc_y_pred))
 print("Accuracy of DECISION TREE CLASSIFIER in percentage (%): ", (accuracy_score(y_test, dtc_y_pred))*100)
+sns.heatmap(cm, annot=True)
+plt.show()
 
 # IMPORT THE MODEL/ALGORITHM - GAUSSIAN NB
 from sklearn.naive_bayes import GaussianNB
@@ -167,13 +172,15 @@ gnb_y_pred = gnb.predict(x_test)
 # print(f"First 5 actual values -\n{y_test.values[:5]},\nFirst 5 predicted values -\n{gnb_y_pred[:5]}")
 
 # EVALUATION
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score , confusion_matrix, accuracy_score
+from sklearn.metrics import mean_absolute_error, r2_score , confusion_matrix, accuracy_score, classification_report
 print("\nMODEL EVALUATION: ")
-print("Consfusion Matrixr-\n", confusion_matrix(y_test, gnb_y_pred)) 
+cm = confusion_matrix(y_test,gnb_y_pred)
+print("Consfusion Matrix-\n", confusion_matrix(y_test, gnb_y_pred)) 
 print("Mean_absolute_error = ", mean_absolute_error(gnb_y_pred, y_test)) 
-print("Mean_squared_error = ", mean_squared_error(gnb_y_pred, y_test)) 
-print("r2_score = ", r2_score(gnb_y_pred, y_test)) 
+print("The classification report is:\n",classification_report(y_test,gnb_y_pred))
 print("Accuracy of NAIVE BAYES- GAUSSIAN MODEL in percentage (%): ", (accuracy_score(y_test, gnb_y_pred))*100)
+sns.heatmap(cm, annot=True)
+plt.show()
 
 # IMPORT THE MODEL/ALGORITHM
 from sklearn.neighbors import KNeighborsClassifier 
@@ -187,13 +194,15 @@ knc_y_pred = knn.predict(x_test)
 # print(f"First 5 actual values -\n{y_test.values[:5]},\nFirst 5 predicted values -\n{knc_y_pred[:5]}")
 
 # EVALUATION
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score , confusion_matrix, accuracy_score
+from sklearn.metrics import mean_absolute_error, r2_score , confusion_matrix, accuracy_score, classification_report
 print("\nMODEL EVALUATION: ")
-print("Consfusion Matrixr-\n", confusion_matrix(y_test, knc_y_pred)) 
+cm = confusion_matrix(y_test,knc_y_pred)
+print("Consfusion Matrix-\n", confusion_matrix(y_test, knc_y_pred)) 
 print("Mean_absolute_error = ", mean_absolute_error(knc_y_pred, y_test)) 
-print("Mean_squared_error = ", mean_squared_error(knc_y_pred, y_test)) 
-print("r2_score = ", r2_score(knc_y_pred, y_test)) 
+print("The classification report is:\n",classification_report(y_test,knc_y_pred))
 print("Accuracy of K- NEAREST NEIGHBOR CLASSIFIER in percentage (%): ", (accuracy_score(y_test, knc_y_pred))*100)
+sns.heatmap(cm, annot=True)
+plt.show()
 
 # IMPORT THE MODEL/ALGORITHM
 from sklearn.ensemble import RandomForestClassifier
@@ -206,13 +215,15 @@ rfc.fit(x_train,y_train)
 rfc_y_pred = rfc.predict(x_test) 
 
 # EVALUATION
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score , confusion_matrix, accuracy_score
+from sklearn.metrics import mean_absolute_error, r2_score , confusion_matrix, accuracy_score, classification_report
 print("\nMODEL EVALUATION: ")
-print("Consfusion Matrixr-\n", confusion_matrix(y_test, rfc_y_pred)) 
+cm = confusion_matrix(y_test,rfc_y_pred)
+print("Consfusion Matrix-\n", confusion_matrix(y_test, rfc_y_pred)) 
 print("Mean_absolute_error = ", mean_absolute_error(rfc_y_pred, y_test)) 
-print("Mean_squared_error = ", mean_squared_error(rfc_y_pred, y_test)) 
-print("r2_score = ", r2_score(rfc_y_pred, y_test)) 
+print("The classification report is:\n",classification_report(y_test,rfc_y_pred))
 print("Accuracy of RANDOM FOREST CLASSIFIER in percentage (%): ", (accuracy_score(y_test, rfc_y_pred))*100)
+sns.heatmap(cm, annot=True)
+plt.show()
 
 # IMPORT THE MODEL/ALGORITHM
 from sklearn.svm import SVC
@@ -225,13 +236,15 @@ svm.fit(x_train,y_train)
 svm_y_pred = svm.predict(x_test) 
 
 # EVALUATION
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score , confusion_matrix, accuracy_score
+from sklearn.metrics import mean_absolute_error, r2_score , confusion_matrix, accuracy_score, classification_report
 print("\nMODEL EVALUATION: ")
-print("Consfusion Matrixr-\n", confusion_matrix(y_test, svm_y_pred)) 
+cm = confusion_matrix(y_test,svm_y_pred)
+print("Consfusion Matrix-\n", confusion_matrix(y_test, svm_y_pred)) 
 print("Mean_absolute_error = ", mean_absolute_error(svm_y_pred, y_test)) 
-print("Mean_squared_error = ", mean_squared_error(svm_y_pred, y_test)) 
-print("r2_score = ", r2_score(svm_y_pred, y_test)) 
+print("The classification report is:\n",classification_report(y_test,svm_y_pred))
 print("Accuracy of SUPPORT VECTOR in percentage (%): ", (accuracy_score(y_test, svm_y_pred))*100)
+sns.heatmap(cm, annot=True)
+plt.show()
 
 # ---------------------PERFORMANCE ANALYSIS OF DIFFERENT MODELS -------------------
 dataPerf = pd.DataFrame(data={'Model': ['LogisticRegression', 'BernoulliNB', 'Decision Tree Classifier', 'GaussianNB','K-Nearest Neighbours Classifier', 'Random Forest', 'SVM'], 'Score': [lr.score(x_test, y_test), bnb.score(x_test, y_test), dtc.score(x_test, y_test), gnb.score(x_test, y_test), knn.score(x_test, y_test), rfc.score(x_test, y_test), svm.score(x_test, y_test)]})
