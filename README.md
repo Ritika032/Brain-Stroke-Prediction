@@ -1,6 +1,6 @@
 # Brain-Stroke-Prediction Analysis - Classification
-# Datset Information
-Brain Stroke Dataset Attribute Information
+# Dataset Information
+Brain Stroke Dataset Attribute Information-
 1) gender: "Male", "Female" or "Other"
 2) age: age of the patient
 3) hypertension: 0 if the patient doesn't have hypertension, 1 if the patient has hypertension
